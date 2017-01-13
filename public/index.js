@@ -174,7 +174,11 @@ function Price()
       var priceperkm=alert(cars.pricePerKm);
       var priceperday=alert(cars.pricePerDay);
       var distancepercar=alert(cars.distance);
-      var date=Math.abs(rentals.returDate-rentals.pickupDate);
+      var lastdate=new Date(rentals.returDate);
+      var fistdate=new Date(rentals.pickupDate);
+      var returnDate=lastdate.getDate();
+      var pickupDate=fistdate.getDate()-1;
+      var date=returnDate-pickupDate;
       rentalprice=priceperday*date+priceperkm*distancepercar;
       rentals.price=rentalprice;
     }
