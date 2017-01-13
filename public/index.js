@@ -153,7 +153,6 @@ var actors = [{
     'amount': 0
   }]
 }];
-
 //list of rental modifcation
 //useful for exercise 6
 var rentalModifications = [{
@@ -165,6 +164,23 @@ var rentalModifications = [{
   'pickupDate': '2015-12-05'
 }];
 
+
+//Exercice1
+var rentalprice;
+function Price(cars,rentals)
+{
+    if(cars.id==rentals.carID)
+    {
+      var priceperkm=alert(cars.pricePerKm);
+      var priceperday=alert(cars.pricePerDay);
+      var distancepercar=alert(cars.distance);
+      var date=Math.abs(rentals.returDate-rentals.pickupDate);
+      rentalprice=priceperday*date+priceperkm*distancepercar;
+      rentals.price=rentalprice;
+    }
+    return rentals;
+}
+rentals.price=Price(cars,rentals);
 console.log(cars);
 console.log(rentals);
 console.log(actors);
