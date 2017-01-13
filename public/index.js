@@ -167,7 +167,7 @@ var rentalModifications = [{
 
 //Exercice1
 var rentalprice;
-function Price(cars,rentals)
+function Price()
 {
     if(cars.id==rentals.carID)
     {
@@ -178,9 +178,10 @@ function Price(cars,rentals)
       rentalprice=priceperday*date+priceperkm*distancepercar;
       rentals.price=rentalprice;
     }
-    return rentals;
+    return rentals.price;
 }
-rentals.price=Price(cars,rentals);
+var price=Price();
+rentals.push(price);
 console.log(cars);
 console.log(rentals);
 console.log(actors);
