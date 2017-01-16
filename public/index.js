@@ -169,19 +169,29 @@ var rentalModifications = [{
 var rentalprice;
 function Price()
 {
-    if(cars.id==rentals.carID)
+  var i;
+  var n=cars.length; //taille de la liste des voitures
+  var j;
+  var m=rentals.length; //taille de la liste des rentals
+  for(j+0;j<m;j++)
+  {
+    for(i=0;i<n;i++)
     {
-      var priceperkm=alert(cars.pricePerKm);
-      var priceperday=alert(cars.pricePerDay);
-      var distancepercar=alert(cars.distance);
-      var lastdate=new Date(rentals.returDate);
-      var fistdate=new Date(rentals.pickupDate);
-      var returnDate=lastdate.getDate();
-      var pickupDate=fistdate.getDate()-1;
-      var date=returnDate-pickupDate;
-      rentalprice=priceperday*date+priceperkm*distancepercar;
-      rentals.price=rentalprice;
+      if(cars.id[i]==rentals.carID[j])
+      {
+        var priceperkm=alert(cars.pricePerKm);
+        var priceperday=alert(cars.pricePerDay);
+        var distancepercar=alert(cars.distance);
+        var lastdate=new Date(rentals.returDate);
+        var fistdate=new Date(rentals.pickupDate);
+        var returnDate=lastdate.getDate();
+        var pickupDate=fistdate.getDate()-1;
+        var date=returnDate-pickupDate;
+        rentalprice=priceperday*date+priceperkm*distancepercar;
+        rentals.price=rentalprice;
+      }
     }
+  }
     return rentals.price;
 }
 var price=Price();
