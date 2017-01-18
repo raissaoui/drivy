@@ -166,7 +166,6 @@ var rentalModifications = [{
 
 
 //Exercice1
-var rentalprice;
 function ConvertDate(date1,date2)
 {
   var firstDate=new Date(date1);
@@ -174,34 +173,13 @@ function ConvertDate(date1,date2)
   var day=1+Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
   return day;
 }
-/*
-//function Price(cars,rentals)
-//{
-  var oneDay=24*60*60*1000;
-  for(var i=0;j<rentals.length;j++)
-  {
-    var carID=rentals[i].carId;
-    var km=rentals[i].distance;
-    var day=convertDate(rentals[i].returnDate,rentals[i].pickupDate);
-    for(var j=0;j<cars.length;i++)
-    {
-      if(cars[j].id==carID)
-      {
-        var pricePerKm=cars[j].pricePerKm;
-        var pricePerDay=cars[j].pricePerDay;
-      }
-    }
-    rentals[i].price=pricePerKm*km+pricePerDay*day;
-  }
-  //return rentals.price;
-//Price(cars,rentals);
-*/
-function ConvertDate(date1,date2)
+function Deductible(option,price,day)
 {
-  var firstDate=new Date(date1);
-  var secondDate=new Date(date2);
-  var day=1+Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
-  return day;
+  if(option=true)
+  {
+    price=price+4*day;
+  }
+  return price;
 }
 //exercice1
 for(var i=0;i<rentals.length;i++)
@@ -209,11 +187,12 @@ for(var i=0;i<rentals.length;i++)
   var carID=rentals[i].carId;
   var km=rentals[i].distance;
   var oneDay=24*60*60*1000;
-  //fontcion convertDate defini plus haut
+  var price=rentals[i].price;
   var day=ConvertDate(rentals[i].returnDate,rentals[i].pickupDate);
   //exercice2
   if(day>=1 && day<4)
   {
+    var percent=10/100;
     for(var j=0;j<cars.length;j++)
     {
       if(carID==cars[j].id)
@@ -222,12 +201,12 @@ for(var i=0;i<rentals.length;i++)
         var pricePerDay=cars[j].pricePerDay;
       }
     }
-
     rentals[i].price=pricePerKm*km+pricePerDay*day;
-    rentals[i].price=rentals[i].price-rentals[i].price*10/100
+    rentals[i].price=rentals[i].price-rentals[i].price*percent;
   }
   else if(day>=4 && day<10)
   {
+    var percent=30/100;
     for(var j=0;j<cars.length;j++)
     {
       if(carID==cars[j].id)
@@ -236,12 +215,12 @@ for(var i=0;i<rentals.length;i++)
         var pricePerDay=cars[j].pricePerDay;
       }
     }
-
     rentals[i].price=pricePerKm*km+pricePerDay*day;
-    rentals[i].price=rentals[i].price-rentals[i].price*30/100
+    rentals[i].price=rentals[i].price-rentals[i].price*percent;
   }
   else if(day>=10)
   {
+    var percent=50/100;
     for(var j=0;j<cars.length;j++)
     {
       if(carID==cars[j].id)
@@ -252,9 +231,52 @@ for(var i=0;i<rentals.length;i++)
     }
 
     rentals[i].price=pricePerKm*km+pricePerDay*day;
-    rentals[i].price=rentals[i].price-rentals[i].price*50/100
+    rentals[i].price=rentals[i].price-rentals[i].price*percent;
   }
+
+  //exercice4
+
+  var option=rentals[i].options;
+  var price=rentals[i].price;
+  var newprice=Deductible(option,price,day);
+
+  //exerice3
+
+  var commission=rentals[i].price*0.3;
+  rentals[i].commission.assistance=1*day;
+  rentals[i].commission.insurance=commission*0.5;
+  rentals[i].commission.drivy=commission*0.5-rentals[i].commission.assistance;
+
+  //exerice5
+  for(var k=0;k<actors.length;k++)
+  {
+    if(actors[k].rentalId==rentals[i].id)
+    {
+      if(actors[k].payment.who=='driver' && actors[k].payment.type=='debit')
+      {
+        actors[k].payment.amount=Deductible(rentals[i].options,rentals[i].price,day);
+      }
+      else if(actors[k].payment.who=='owner' && actors[k].payment.type=='credit')
+      {
+        actors[k].payment.amount=rentals[i].price*0.3;
+      }
+      else if(actors[k].payment.who=='insurance' && actors[k].payment.type=='credit')
+      {
+        actors[k].payment.amount=rentals[i].price*0.3*0.5;
+      }
+      else if(actors[k].payment.who=='assistance' && actors[k].payment.type=='credit')
+      {
+        actors[k].payment.amount=1*day;
+      }
+      else if(actors[k].payment.who=='drivy' && actors[k].payment.type=='credit')
+      {
+        actors[k].payment.amount=rentals[i].price*0.3*0.5-1*day;
+      }
+    }
+  }
+
 }
+
 console.log(cars);
 console.log(rentals);
 console.log(actors);
